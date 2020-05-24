@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Gabriel-JM/clean-tdd-node-api/issues"
   },
-  "homepage": "https://github.com/Gabriel-JM/clean-tdd-node-api#readme"
+  "homepage": "https://github.com/Gabriel-JM/clean-tdd-node-api#readme",
+  "devDependencies": {
+    "standard": "^14.3.4"
+  }
 }
