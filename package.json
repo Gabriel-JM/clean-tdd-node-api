@@ -4,7 +4,7 @@
   "description": "(Study) A Node.js API for practice clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "lint-staged": {
     "*.js": [
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/Gabriel-JM/clean-tdd-node-api#readme",
   "devDependencies": {
     "husky": "^4.2.5",
+    "jest": "^26.0.1",
     "lint-staged": "^10.2.6",
     "standard": "^14.3.4"
   }
