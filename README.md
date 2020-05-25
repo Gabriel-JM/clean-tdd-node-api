@@ -1,2 +1,2 @@
-# clean-tdd-node-api
-(Study) A Node.js API for practice clean architecture and TDD.
+# Clean Architecture and TDD Node.js API
+(Study) Repository for my study about TDD and clean architecture with Node.js
