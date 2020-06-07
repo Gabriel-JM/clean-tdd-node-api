@@ -1,24 +1,32 @@
-const { MissingParamError } = require('../../utils/errors')
+const { MissingParamError, InvalidParamError } = require('../../utils/errors')
 
-const makeSut = () => {
-  class AuthUseCase {
-    constructor (loadUserByEmailRepository) {
-      this.loadUserByEmailRepository = loadUserByEmailRepository
-    }
-
-    async auth (email, password) {
-      if (!email) {
-        throw new MissingParamError('email')
-      }
-
-      if (!password) {
-        throw new MissingParamError('password')
-      }
-
-      await this.loadUserByEmailRepository.load(email)
-    }
+class AuthUseCase {
+  constructor (loadUserByEmailRepository) {
+    this.loadUserByEmailRepository = loadUserByEmailRepository
   }
 
+  async auth (email, password) {
+    if (!email) {
+      throw new MissingParamError('email')
+    }
+
+    if (!password) {
+      throw new MissingParamError('password')
+    }
+
+    if (!this.loadUserByEmailRepository) {
+      throw new MissingParamError('loadUserByEmailRepository')
+    }
+
+    if (!this.loadUserByEmailRepository.load) {
+      throw new InvalidParamError('loadUserByEmailRepository')
+    }
+
+    await this.loadUserByEmailRepository.load(email)
+  }
+}
+
+const makeSut = () => {
   class LoadUserByEmailRepositorySpy {
     async load (email) {
       this.email = email
@@ -54,5 +62,19 @@ describe('Auth UseCase', () => {
     await sut.auth('any_email@mail.com', 'any_password')
 
     expect(loadUserByEmailRepositorySpy.email).toBe('any_email@mail.com')
+  })
+
+  test('should throw an error if no LoadUserByEmailRepository is provided', () => {
+    const sut = new AuthUseCase()
+    const promise = sut.auth('any_email@mail.com', 'any_password')
+
+    expect(promise).rejects.toThrow(new MissingParamError('loadUserByEmailRepository'))
+  })
+
+  test('should throw an error if LoadUserByEmailRepository has no load method', () => {
+    const sut = new AuthUseCase({})
+    const promise = sut.auth('any_email@mail.com', 'any_password')
+
+    expect(promise).rejects.toThrow(new InvalidParamError('loadUserByEmailRepository'))
   })
 })
