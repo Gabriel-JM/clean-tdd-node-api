@@ -15,7 +15,8 @@ module.exports = class AuthUseCase {
     }
 
     const user = await this.loadUserByEmailRepository.load(email)
-
     if (!user) return null
+
+    return null
   }
 }
