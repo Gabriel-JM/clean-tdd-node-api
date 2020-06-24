@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const { MissingParamError } = require('../errors')
 
 class TokenGenerator {
   constructor (secret) {
@@ -6,6 +7,10 @@ class TokenGenerator {
   }
 
   async generate (id) {
+    if (!this.secret) {
+      throw new MissingParamError('secret')
+    }
+
     return jwt.sign(id, this.secret)
   }
 }
@@ -36,5 +41,14 @@ describe('Token Generator', () => {
 
     expect(jwt.id).toBe('any_id')
     expect(jwt.secretKey).toBe(sut.secret)
+  })
+
+  test('Should throw if no secret is provided', async () => {
+    const sut = new TokenGenerator()
+    const sutMethod = () => sut.generate('any_id')
+
+    await expect(
+      sutMethod()
+    ).rejects.toThrow('Missing param: secret')
   })
 })
