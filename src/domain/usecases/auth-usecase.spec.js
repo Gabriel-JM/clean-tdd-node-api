@@ -1,4 +1,3 @@
-const { MissingParamError } = require('../../utils/errors')
 const AuthUseCase = require('./auth-usecase')
 
 const makeEncrypter = () => {
@@ -122,18 +121,22 @@ const makeSut = () => {
 }
 
 describe('Auth UseCase', () => {
-  test('should throw an error if no email is provided', () => {
+  test('should throw an error if no email is provided', async () => {
     const { sut } = makeSut()
     const promise = sut.auth()
 
-    expect(promise).rejects.toThrow(new MissingParamError('email'))
+    await expect(promise)
+      .rejects
+      .toThrow('Missing param: email')
   })
 
-  test('should throw an error if no password is provided', () => {
+  test('should throw an error if no password is provided', async () => {
     const { sut } = makeSut()
     const promise = sut.auth('any_email@mail.com')
 
-    expect(promise).rejects.toThrow(new MissingParamError('password'))
+    await expect(promise)
+      .rejects
+      .toThrow('Missing param: password')
   })
 
   test('should call LoadUserByEmailRepository with correct email', async () => {
@@ -195,7 +198,7 @@ describe('Auth UseCase', () => {
     expect(updateAccessTokenRepositorySpy.accessToken).toBe(tokenGeneratorSpy.accessToken)
   })
 
-  test('should throw an error if invalid dependencies are provided', () => {
+  test('should throw an error if invalid dependencies are provided', async () => {
     const invalid = {}
     const loadUserByEmailRepository = makeLoadUserByEmailRepository()
     const encrypter = makeEncrypter()
@@ -238,11 +241,11 @@ describe('Auth UseCase', () => {
 
     for (const sut of suts) {
       const promise = sut.auth('any_email@mail.com', 'any_password')
-      expect(promise).rejects.toThrow()
+      await expect(promise).rejects.toThrow()
     }
   })
 
-  test('should throw an error if dependency throws', () => {
+  test('should throw an error if dependency throws', async () => {
     const loadUserByEmailRepository = makeLoadUserByEmailRepository()
     const encrypter = makeEncrypter()
     const tokenGenerator = makeTokenGenerator()
@@ -270,7 +273,7 @@ describe('Auth UseCase', () => {
 
     for (const sut of suts) {
       const promise = sut.auth('any_email@mail.com', 'any_password')
-      expect(promise).rejects.toThrow()
+      await expect(promise).rejects.toThrow()
     }
   })
 })
