@@ -57,4 +57,13 @@ describe('LoadUserByEmail Repository', () => {
       .rejects
       .toThrow('Missing param: userModel')
   })
+
+  test('Should throw if no email is provided', async () => {
+    const { sut } = makeSut()
+    const promise = sut.load()
+
+    await expect(promise)
+      .rejects
+      .toThrow('Missing param: email')
+  })
 })
