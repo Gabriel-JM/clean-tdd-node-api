@@ -1,12 +1,10 @@
 const MongoHelper = require('../helpers/mongo-helper')
 const UpdateAccessTokenRepository = require('./update-access-token-repository')
 
-let userModel
-
 const makeSut = () => new UpdateAccessTokenRepository()
 
 describe('UpdateAccessToken Repository', () => {
-  let fakeUserId
+  let fakeUserId, userModel
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
