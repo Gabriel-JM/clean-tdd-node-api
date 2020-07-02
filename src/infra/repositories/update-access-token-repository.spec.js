@@ -5,7 +5,7 @@ let db
 
 const makeSut = () => {
   const userModel = db.collection('users')
-  const sut = new UpdateAccessTokenRepository(userModel)
+  const sut = new UpdateAccessTokenRepository()
 
   return {
     sut,
@@ -40,13 +40,6 @@ describe('UpdateAccessToken Repository', () => {
     await sut.update(fakeUserId, 'valid_token')
     const updatedFakeUser = await userModel.findOne({ _id: fakeUserId })
     expect(updatedFakeUser.accessToken).toBe('valid_token')
-  })
-
-  test('Should throw if no userModel is provided', async () => {
-    const sut = new UpdateAccessTokenRepository()
-
-    const promise = sut.update(fakeUserId, 'any_email@mail.com')
-    await expect(promise).rejects.toThrow()
   })
 
   test('Should throw if no params are provided', async () => {

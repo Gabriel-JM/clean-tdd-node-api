@@ -5,7 +5,7 @@ let db
 
 const makeSut = () => {
   const userModel = db.collection('users')
-  const sut = new LoadUserByEmailRepository(userModel)
+  const sut = new LoadUserByEmailRepository()
 
   return {
     sut,
@@ -47,15 +47,6 @@ describe('LoadUserByEmail Repository', () => {
       _id: fromDBUser.ops[0]._id,
       password: fromDBUser.ops[0].password
     })
-  })
-
-  test('Should throw if no userModel is provided', async () => {
-    const sut = new LoadUserByEmailRepository()
-    const promise = sut.load('any_email@mail.com')
-
-    await expect(promise)
-      .rejects
-      .toThrow('Missing param: userModel')
   })
 
   test('Should throw if no email is provided', async () => {
