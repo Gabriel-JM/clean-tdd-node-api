@@ -9,13 +9,13 @@ describe('Mongo Helper', () => {
     async () => await sut.disconnect()
   )
 
-  test('Should reconnect when getDb is invoked and client is disconnected', async () => {
+  test('Should reconnect when getCollection is invoked and client is disconnected', async () => {
     expect(sut.db).not.toBeNull()
 
     await sut.disconnect()
     expect(sut.db).toBeNull()
 
-    await sut.getDb()
+    await sut.getCollection('users')
     expect(sut.db).not.toBeNull()
   })
 })
